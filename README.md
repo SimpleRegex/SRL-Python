@@ -5,7 +5,8 @@ A Python Implementation of [Simple Regex](https://simple-regex.com/).
 
 ## How to install
 
-TODO
+
+    $ pip install srl
 
 ## How to use
 

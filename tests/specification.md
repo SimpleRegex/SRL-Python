@@ -64,7 +64,7 @@ The `literally` character allows you to pass a string to the query that will be 
     >>> builder = Builder()
     >>> query = builder.oneOf('a%1')
     >>> print query.get()
-    [a%1]
+    [a\%1]
     >>> query.is_matching('%')
     True
     >>> query.is_matching('$')
@@ -301,7 +301,7 @@ If you're trying to get more than one match, capture names are useful, too. This
     >>> builder = Builder()
     >>> query = builder.capture(lambda q: q.anything().onceOrMore(), 'first').literally(' - ').capture('second part', 'second')
     >>> print query.get()
-    (?P<first>.+)(?: - )(?P<second>(?:second part))
+    (?P<first>.+)(?:\ \-\ )(?P<second>(?:second\ part))
     >>> query.is_matching('first part - second part')
     True
     >>> query.getMatches('first part - second part')
