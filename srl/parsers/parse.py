@@ -8,7 +8,6 @@ tokens = (
     # Symbols
     'LEFT_PARENTHESIS',
     'RIGHT_PARENTHESIS',
-    'COMMA',
     'NUMBER',
     'CHARACTER',
     'STRING',
@@ -37,6 +36,7 @@ tokens = (
     'K_AND',
     'K_OPTIONAL',
     'K_ONCE',
+    'K_TWICE',
     'K_NEVER',
     'K_OR',
     'K_MORE',
@@ -61,13 +61,13 @@ tokens = (
     'K_MUST',
     'K_END',
     'K_CHARACTER',
+    'K_NOT',
 
 )
 
 # Regular expression rules for tokens
 t_LEFT_PARENTHESIS = r'\('
 t_RIGHT_PARENTHESIS = r'\)'
-t_COMMA = r','
 
 def t_NUMBER(t):
     r'\d+'
@@ -93,11 +93,12 @@ t_K_WHITESPACE = r'whitespace'
 t_K_TAB = r'tab'
 t_K_RAW = r'raw'
 t_K_EXACTLY = r'exactly'
-t_K_TIMES = r'times'
+t_K_TIMES = r'times?'
 t_K_BETWEEN = r'between'
 t_K_AND = r'and'
 t_K_OPTIONAL = r'optional'
 t_K_ONCE = r'once'
+t_K_TWICE = r'twice'
 t_K_NEVER = r'never'
 t_K_OR = r'or'
 t_K_MORE = r'more'
@@ -122,6 +123,7 @@ t_K_WITH = r'with'
 t_K_MUST = r'must'
 t_K_END = r'end'
 t_K_CHARACTER = r'character'
+t_K_NOT = r'not'
 
 # Define a rule so we can track line numbers
 def t_newline(t):
@@ -153,6 +155,9 @@ def p_character_with_anchor(p):
                  | anchor character
                  | anchor anchor
                  | character flag
+                 | character lookaround
+                 | lookaround character
+                 | character character
     '''
     p[0] = []
     p[0] += p[1]
@@ -250,6 +255,14 @@ def p_quantifier_exactly_x_times(p):
     'quantifier : K_EXACTLY NUMBER K_TIMES'
     p[0] = [('exactly', (p[2], ))]
 
+def p_quantifier_once(p):
+    'quantifier : K_ONCE'
+    p[0] = [('once', ())]
+
+def p_quantifier_twice(p):
+    'quantifier : K_TWICE'
+    p[0] = [('twice', ())]
+
 def p_quantifier_between_x_and_y_times(p):
     '''quantifier : K_BETWEEN NUMBER K_AND NUMBER K_TIMES
                   | K_BETWEEN NUMBER K_AND NUMBER
@@ -295,12 +308,14 @@ def p_group_any_of(p):
     '''
     p[0] = [('anyOf', (p[3], ))]
 
+def p_group_nonCapture(p):
+    'character : group'
+    p[0] = [('nonCapture', (p[1], ))]
+
 def p_group_until(p):
-    '''group : K_UNTIL group
+    '''character : K_UNTIL group
     '''
-    p[0] = p[0] or []
-    conditions = ('lambda', p[3])
-    p[0].append(('until', (conditions, )))
+    p[0] = [('until', (p[2], ))]
 
 def p_flag_case_insensitive(p):
     '''flag : K_CASE K_INSENSITIVE
@@ -334,17 +349,21 @@ def p_anchor_must_end(p):
         p[0] += p[1]
     p[0].append(('mustEnd', ()))
 
-def p_query_srl(p):
-    '''query : group
-             | character
-             | character quantifier
-    '''
-    p[0] = []
-    if len(p) == 2:
-        p[0] += p[1]
-    elif len(p) == 3:
-        p[0] += p[1]
-        p[0] += p[2]
+def p_lookaround_if_followed_by(p):
+    'lookaround : K_IF K_FOLLOWED K_BY group'
+    p[0] = [('ifFollowedBy', (p[4], ))]
+
+def p_lookaround_if_not_followed_by(p):
+    'lookaround : K_IF K_NOT K_FOLLOWED K_BY group'
+    p[0] = [('ifNotFollowedBy', (p[5], ))]
+
+def p_lookaround_if_already_had(p):
+    'lookaround : K_IF K_ALREADY K_HAD group'
+    p[0] = [('ifAlreadHad', (p[4], ))]
+
+def p_lookaround_if_already_had(p):
+    'lookaround : K_IF K_NOT K_ALREADY K_HAD group'
+    p[0] = [('ifNotAlreadHad', (p[5], ))]
 
 class SRLSyntaxError(Exception):
     pass
@@ -352,6 +371,7 @@ class SRLSyntaxError(Exception):
 def p_error(p):
     raise SRLSyntaxError(str(p))
 
+parser = yacc.yacc(debug=False)
+
 def parse(string):
-    parser = yacc.yacc(debug=False)
     return parser.parse(string, lexer=lexer, tracking=False)

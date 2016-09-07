@@ -1,6 +1,7 @@
  # -*- coding: utf-8 -*-
 
 import re
+from glob import glob
 from srl.builder import Builder
 from srl.srl import SRL
 
@@ -106,7 +107,34 @@ def test_parse():
     assert SRL('capture (digit once or more)').match('1').groups() == ('1', )
     assert SRL('capture (digit once or more) as "mydigit"').match('1').groups() == ('1', )
     assert SRL('any of (literally "sample")').match('sample')
-    #assert SRL('capture (anything once or more) until "m"').match('example')
+    assert SRL('capture (anything once or more) until "m"').match('example')
     assert SRL('begin with must end').match('')
     assert SRL('letter case insensitive').match('A')
     assert SRL('capture (letter once or more) all lazy').match('a')
+
+def test_rules():
+    for filename in glob('tests/rules/*.rule'):
+        with open(filename) as f:
+            fdata = f.read()
+            rule = SRL('literally "srl:", whitespace once or more, capture (anything once or more)')
+            dsl = rule.compiled.search(fdata).groups()[0]
+            srl = SRL(dsl)
+            in_capture = False
+            data = {'srl': None, 'matches': [], 'no_matches': [], 'captures': {}}
+            for line in fdata.splitlines():
+                if not line or line.startswith('#'):
+                    continue
+                if in_capture and not line.startswith('-'):
+                    in_capture = False
+                if line.startswith('srl: '):
+                    data['srl'] = line[5:]
+                elif line.startswith('match: "'):
+                    data['matches'].append(line[8:-1])
+                elif line.startswith('no match: "'):
+                    data['no_matches'].append(line[11:-1])
+                elif line.startswith('capture for "') and line.endswith('":'):
+                    in_capture = line[13:-2]
+                    data['captures'][in_capture] = {}
+                elif in_capture and line.startswith('-'):
+                    split = line[1:].split(': ')
+                    data['captures'][in_capture][split[1].strip()] = split[2][1:-1]

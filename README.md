@@ -17,10 +17,8 @@ TODO
 
 ## How to test
 
-```python
-$ pip install nose
-$ nosetests -c ./nose.cfg
-```
+    $ pip install nose
+    $ nosetests -c ./nose.cfg
 
 ## TODO
 

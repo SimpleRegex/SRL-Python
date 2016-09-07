@@ -5,9 +5,12 @@ import copy
 
 from .parsers.parse import parse
 
+ESCAPE = re.compile(r'((P<special>[\[\\^$.|?*+()])|(P<nonspecial>.))')
+
 class LazyError(Exception): pass
 
 class Builder(object):
+
 
     def __init__(self, regex=None, flags=0, group='%s'):
         self.regex = regex or []
@@ -15,9 +18,12 @@ class Builder(object):
         self.compiled = None
         self.group = group or '%s'
 
+    def escape(self, string):
+        return re.escape(string)
+
     def literally(self, char):
-        if char in {'+', '\\', '.'}:
-            char = '\\' + char
+        char = char.replace(r'\"', '"')
+        char = self.escape(char)
         self.regex.append(r'(?:%s)' % char)
         return self
 
@@ -141,6 +147,11 @@ class Builder(object):
 
     eitherOf = anyOf
 
+    def nonCapture(self, conditions):
+        builder = Builder()
+        builder.group = '(?:%s)'
+        return self.addClosure(builder, conditions)
+
     def until(self, conditions):
         try:
             self.lazy()
@@ -149,8 +160,9 @@ class Builder(object):
         builder = Builder()
         return self.addClosure(builder, conditions)
 
-    def oneOf(self, chars):
-        self.regex.append(r'[%s]' % chars)
+    def oneOf(self, char):
+        char = self.escape(char)
+        self.regex.append(r'[%s]' % char)
         return self
 
     def ifFollowedBy(self, conditions):
