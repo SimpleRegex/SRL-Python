@@ -5,8 +5,6 @@ import copy
 
 from .parsers.parse import parse
 
-ESCAPE = re.compile(r'((P<special>[\[\\^$.|?*+()])|(P<nonspecial>.))')
-
 class LazyError(Exception): pass
 
 class Builder(object):
