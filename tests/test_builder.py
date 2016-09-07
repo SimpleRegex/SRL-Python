@@ -138,3 +138,7 @@ def test_rules():
                 elif in_capture and line.startswith('-'):
                     split = line[1:].split(': ')
                     data['captures'][in_capture][split[1].strip()] = split[2][1:-1]
+            for match in data['matches']:
+                assert srl.search(match), match
+            for no_match in data['no_matches']:
+                assert not srl.search(no_match), no_match
