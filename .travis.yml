@@ -8,5 +8,5 @@ python:
   - "3.5"
   - "pypy"
 
-install: "python setup.py develop && pip install tox"
-script: tox
+install: "python setup.py develop && pip install nose"
+script: nosetests -c .nose.cfg
