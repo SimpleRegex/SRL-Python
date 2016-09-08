@@ -10,6 +10,8 @@ You can download and install the latest version of this software from the Python
 
     $ pip install srl
 
+SRL-Python supports Python 2.7/3.3/3.4/3.5/pypy.
+
 ## Usage
 
 Class `SRL` takes a Simple Regex Language string as input.
