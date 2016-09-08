@@ -359,11 +359,11 @@ def p_lookaround_if_not_followed_by(p):
 
 def p_lookaround_if_already_had(p):
     'lookaround : K_IF K_ALREADY K_HAD group'
-    p[0] = [('ifAlreadHad', (p[4], ))]
+    p[0] = [('if_already_had', (p[4], ))]
 
 def p_lookaround_if_not_already_had(p):
     'lookaround : K_IF K_NOT K_ALREADY K_HAD group'
-    p[0] = [('ifNotAlreadHad', (p[5], ))]
+    p[0] = [('if_not_already_had', (p[5], ))]
 
 class SRLSyntaxError(Exception):
     pass

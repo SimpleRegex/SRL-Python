@@ -15,6 +15,7 @@ class Builder(object):
         self.flags = flags or 0
         self.compiled = None
         self.group = group or '%s'
+        self.greedy_mode = True
 
     def escape(self, string):
         return re.escape(string)
@@ -76,15 +77,24 @@ class Builder(object):
         return self
 
     def once_or_more(self):
-        self.regex.append(r'+')
+        if self.greedy_mode:
+            self.regex.append(r'+')
+        else:
+            self.regex.append(r'+?')
         return self
 
     def never_or_more(self):
-        self.regex.append(r'*')
+        if self.greedy_mode:
+            self.regex.append(r'*')
+        else:
+            self.regex.append(r'*?')
         return self
 
     def optional(self, char=''):
-        self.regex.append(r'%s?' % char)
+        if self.greedy_mode:
+            self.regex.append(r'%s?' % char)
+        else:
+            self.regex.append(r'%s??' % char)
         return self
 
     def first_match(self):
@@ -114,6 +124,7 @@ class Builder(object):
         return self
 
     def add_closure(self, builder, conditions, exploder=''):
+        builder.greedy_mode = self.greedy_mode
         if isinstance(conditions, basestring):
             subquery = builder.literally(conditions)
         elif callable(conditions):
@@ -208,7 +219,6 @@ class Builder(object):
         return self
 
     def all_lazy(self):
-        self.regex.append(r'?') # FIXME: assert
         return self
 
     def revert_last(self):
@@ -279,6 +289,12 @@ class Builder(object):
         parsed = parse(string)
         if not parsed:
             raise Exception('Invalid Simple Regex')
+
+        for method, arg in parsed:
+            if method == 'all_lazy':
+                builder.greedy_mode = False
+
         for method, arg in parsed:
             builder = getattr(builder, method)(*arg)
+
         return builder.compile().compiled
