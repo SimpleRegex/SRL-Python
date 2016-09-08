@@ -373,7 +373,7 @@ By default, regular expressions are case sensitive. That means, if you supply so
     >>> print(srl)
     [a-b]{2}
     >>> import re
-    >>> srl.flags == re.IGNORECASE
+    >>> srl.flags & re.IGNORECASE == re.IGNORECASE
     True
     >>> bool(srl.match('Ab'))
     True

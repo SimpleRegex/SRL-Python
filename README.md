@@ -2,6 +2,8 @@
 
 Python Implementation of [Simple Regex](https://simple-regex.com/).
 
+[![Build Status](https://travis-ci.org/SimpleRegex/SRL-Python.svg?branch=master)](https://travis-ci.org/SimpleRegex/SRL-Python)
+
 ## Installation
 
 You can download and install the latest version of this software from the Python package index (PyPI) as follows[WIP]:
