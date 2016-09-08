@@ -30,7 +30,7 @@ SRL Builder:
 
     >>> from srl import SRL
     >>> srl = SRL('letter from a to f exactly 4 times')
-    >>> print srl
+    >>> print(srl)
     [a-f]{4}
     >>> bool(srl.match('abcd'))
     True
@@ -44,7 +44,7 @@ Okay, let's dive into the different characters. Below, you can find a list of al
 The `literally` character allows you to pass a string to the query that will be interpreted as exactly what you've requested. Nothing else will match, besides your string. Any special character will automatically be escaped. The sample code matches, since the test string contains "sample". Try removing it.
 
     >>> srl = SRL('literally "sample"')
-    >>> print srl
+    >>> print(srl)
     (?:sample)
     >>> srl.findall('this is a sample')
     ['sample']
@@ -58,7 +58,7 @@ The `literally` character allows you to pass a string to the query that will be 
 `literally` comes in handy if the string is known. But if there is a unknown string which may only contain certain characters, using `one of` makes much more sense. This will match one of the supplied characters.
 
     >>> srl = SRL('one of "a%1"')
-    >>> print srl
+    >>> print(srl)
     [a\%1]
     >>> bool(srl.match('%'))
     True
@@ -74,7 +74,7 @@ This will help you to match a letter between a specific span, if the exact word 
 Please note, that this will only match one letter. If you expect more than one letter, use a quantifier.
 
     >>> srl = SRL('letter from a to f')
-    >>> print srl
+    >>> print(srl)
     [a-f]
     >>> bool(srl.match('a'))
     True
@@ -88,7 +88,7 @@ Please note, that this will only match one letter. If you expect more than one l
 This of course behaves just like the normal letter, with the only difference, that uppercase letter only matches letters that are written in uppercase. Of course, if the case insensitive flag is applied to the query, these two act completely the same.
 
     >>> srl = SRL('uppercase letter from A to F')
-    >>> print srl
+    >>> print(srl)
     [A-F]
     >>> bool(srl.match('E'))
     True
@@ -100,7 +100,7 @@ This of course behaves just like the normal letter, with the only difference, th
 Just like a letter, `any character` matches anything between A to Z, 0 to 9 and `_`, case insensitive. This way you can validate if someone for example entered a valid username.
 
     >>> srl = SRL('starts with any character once or more, must end')
-    >>> print srl
+    >>> print(srl)
     ^\w+$
     >>> bool(srl.match('aBcD0_1'))
     True
@@ -112,7 +112,7 @@ Just like a letter, `any character` matches anything between A to Z, 0 to 9 and 
 The inverse to the any character-character is no character. This will match everything except a to z, A to Z, 0 to 9 and `_`.
 
     >>> srl = SRL('starts with no character once or more, must end')
-    >>> print srl
+    >>> print(srl)
     ^\W+$
     >>> bool(srl.match('/+$!'))
     True
@@ -128,7 +128,7 @@ When expecting a digit, but not a specific one, this comes in handy. Each digit 
 Note: `number` is an alias for `digit`.
 
     >>> srl = SRL('starts with digit from 5 to 7 exactly 2 times, must end')
-    >>> print srl
+    >>> print(srl)
     ^[5-7]{2}$
     >>> bool(srl.match('42'))
     False
@@ -142,7 +142,7 @@ Note: `number` is an alias for `digit`.
 Any character whatsoever. Well.. except for line breaks. This will match any character, except new lines. And, of course, only once. So don't forget to apply a quantifier, if necessary.
 
     >>> srl = SRL('anything')
-    >>> print srl
+    >>> print(srl)
     .
     >>> bool(srl.match('any-% th1ng!'))
     True
@@ -154,7 +154,7 @@ Any character whatsoever. Well.. except for line breaks. This will match any cha
 Match a new line.
 
     >>> srl = SRL('new line')
-    >>> print srl
+    >>> print(srl)
     \n
     >>> bool(srl.match('\n'))
     True
@@ -166,13 +166,13 @@ Match a new line.
 This matches any whitespace character. This includes a space, tab or new line. If using no whitespace everything except a whitespace character will match.
 
     >>> srl = SRL('whitespace')
-    >>> print srl
+    >>> print(srl)
     \s
     >>> bool(srl.match(' '))
     True
 
     >>> srl = SRL('no whitespace')
-    >>> print srl
+    >>> print(srl)
     \S
     >>> bool(srl.match('y'))
     True
@@ -184,7 +184,7 @@ This matches any whitespace character. This includes a space, tab or new line. I
 If you want to match tabs, but no other whitespace characters, this might be for you. It will only match the tab character, and nothing else.
 
     >>> srl = SRL('tab')
-    >>> print srl
+    >>> print(srl)
     \t
     >>> bool(srl.match('\t'))
     True
@@ -198,7 +198,7 @@ If you want to match tabs, but no other whitespace characters, this might be for
 Sometimes, you may want to enforce a specific part of a regular expression. You can do this by using raw. This will append the given string without escaping it.
 
     >>> srl = SRL('literally "an", whitespace, raw "[a-zA-Z]"')
-    >>> print srl
+    >>> print(srl)
     (?:an)\s[a-zA-Z]
     >>> bool(srl.match('an Example'))
     True
@@ -218,7 +218,7 @@ You're sure. You don't guess, you dictate. `exactly 4 times`. Not more, not less
 Note: since `exactly x times` is pretty much to write, short terms exist. Instead of `exactly 1 time`, you can write `once`, and for 2, take `twice`.
 
     >>> srl = SRL('digit exactly 3 times, letter twice')
-    >>> print srl
+    >>> print(srl)
     [0-9]{3}[a-z]{2}
     >>> bool(srl.match('123ab'))
     True
@@ -232,7 +232,7 @@ For a specific number of repetitions between a span of x to y, you may use this 
 Note: since `between x and y times` is pretty much to write, you can get rid of the times: `between 1 and 5`
 
     >>> srl = SRL('starts with digit between 3 and 5 times, letter twice')
-    >>> print srl
+    >>> print(srl)
     ^[0-9]{3,5}[a-z]{2}
     >>> bool(srl.match('1234ab'))
     True
@@ -244,7 +244,7 @@ Note: since `between x and y times` is pretty much to write, you can get rid of 
 You can't always be sure that something exists. Sometimes it's okay if something is missing. In that case, the optional quantifier comes in handy. It will match, if it's there, and ignore it, if it's missing.
 
     >>> srl = SRL('digit optional, letter twice')
-    >>> print srl
+    >>> print(srl)
     [0-9]?[a-z]{2}
     >>> bool(srl.match('ab'))
     True
@@ -256,7 +256,7 @@ You can't always be sure that something exists. Sometimes it's okay if something
 If something has to exist at least once, or never, but if it does, then it may exist multiple times, the quantifiers `once or more` and `never or more` will do the job.
 
     >>> srl = SRL('starts with letter once or more, must end')
-    >>> print srl
+    >>> print(srl)
     ^[a-z]+$
     >>> bool(srl.match('abcdefghijklmnopqrstuvwxyz'))
     True
@@ -268,7 +268,7 @@ If something has to exist at least once, or never, but if it does, then it may e
 Something may exist in an infinite length, but must exist at least x times.
 
     >>> srl = SRL('letter at least 10 times')
-    >>> print srl
+    >>> print(srl)
     [a-z]{10,}
     >>> bool(srl.match('invalid'))
     False
@@ -292,7 +292,7 @@ To go beyond simply validating input, a capture group comes in handy. You can ca
 If you're trying to get more than one match, capture names are useful, too. This is completely optional, but you can supply a name for a capture group using the as "name" syntax.
 
     >>> srl = SRL('capture (anything once or more) as "first", literally " - ", capture "second part" as "second"')
-    >>> print srl
+    >>> print(srl)
     (?P<first>.+)(?:\ \-\ )(?P<second>(?:second\ part))
     >>> bool(srl.match('first part - second part'))
     True
@@ -310,7 +310,7 @@ As you can see, you can feel free to nest multiple groups and even parentheses. 
 Note: `either of` is a synonym of `any of`.
 
     >>> srl = SRL('capture (any of (literally "sample", (digit once or more)))')
-    >>> print srl
+    >>> print(srl)
     ((?:(?:sample)|(?:[0-9]+)))
     >>> bool(srl.match('sample'))
     True
@@ -326,7 +326,7 @@ Sometimes you want to match or capture a specific expression until some other co
 In the example below, we'll provide a string as a condition. However, this would work as well using a more complex expression, just like above.
 
     >>> srl = SRL('begin with capture (anything once or more) until "m"')
-    >>> print srl
+    >>> print(srl)
     ^(.+?)(?:m)
     >>> bool(srl.match('this is an example'))
     True
@@ -340,7 +340,7 @@ Sometimes, you may only want to match a certain condition if it is directly foll
 This can be done using lookahead. In SRL, a lookahead can be positive (if followed by) or negative (if not followed by). The example below will only capture the number, if it's no more followed by any other number.
 
     >>> srl = SRL('capture (digit) if not followed by (anything once or more, digit)')
-    >>> print srl
+    >>> print(srl)
     ([0-9])(?!.+[0-9])
     >>> srl.findall('This example contains 3 numbers. 2 should not match. Only 1 should.')
     ['1']
@@ -354,7 +354,7 @@ Just like a lookahead, the lookbehind, which can be positive and negative as wel
 For example, you may only want to match bar if it's directly following foo:
 
     >>> srl = SRL('capture "bar" if already had "foo"')
-    >>> print srl
+    >>> print(srl)
     (?<=(?:foo))((?:bar))
     >>> srl.search('foobar').group()
     'bar'
@@ -370,7 +370,7 @@ Flags apply to the whole expression generated and can be included at any point. 
 By default, regular expressions are case sensitive. That means, if you supply something like letter or literally it's important that the case matches. literally "foo" won't match FOO. Using the case insensitive flag however, will tell the engine to ignore case mismatches.
 
     >>> srl = SRL('letter from a to b twice, case insensitive')
-    >>> print srl
+    >>> print(srl)
     [a-b]{2}
     >>> import re
     >>> srl.flags == re.IGNORECASE
@@ -402,7 +402,7 @@ Matching in regular expression is greedy by default, meaning it will try to matc
 In the example below, you can see that each letter is a new match. If you try removing the all lazy flag, it will match until the end of the word.
 
     >>> srl = SRL('capture (letter once or more) all lazy')
-    >>> print srl
+    >>> print(srl)
     ([a-z]+?)
     >>> srl.findall('this is a sample')
     ['t', 'h', 'i', 's', 'i', 's', 'a', 's', 'a', 'm', 'p', 'l', 'e']
@@ -421,7 +421,7 @@ But try for yourself. Remove the starts with anchor and play around.
 Note: begin with is a synonym and behaves just like starts with.
 
     >>> srl = SRL('starts with literally "match"')
-    >>> print srl
+    >>> print(srl)
     ^(?:match)
     >>> bool(srl.match('no match!'))
     False
@@ -436,7 +436,7 @@ Just like the above, you often want to force the string to end. must end will st
 
 
     >>> srl = SRL('literally "match" must end')
-    >>> print srl
+    >>> print(srl)
     (?:match)$
     >>> bool(srl.match('match!'))
     False
