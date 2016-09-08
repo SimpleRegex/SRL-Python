@@ -28,6 +28,7 @@ Every character or character set can be quantified. You may want to match exactl
 
 SRL Builder:
 
+    >>> from srl import SRL
     >>> srl = SRL('letter from a to f exactly 4 times')
     >>> print srl
     [a-f]{4}
