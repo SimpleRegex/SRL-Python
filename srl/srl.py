@@ -8,5 +8,8 @@ class SRL(object):
         self.dsl = dsl
         self.compiled = Builder.parse(dsl)
 
+    def __str__(self):
+        return self.compiled.pattern
+
     def __getattr__(self, method):
         return getattr(self.compiled, method)
