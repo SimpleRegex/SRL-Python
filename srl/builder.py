@@ -35,15 +35,15 @@ class Builder(object):
         self.regex.append(r'[%s-%s]' % (start, end))
         return self
 
-    def noCharacter(self):
+    def no_character(self):
         self.regex.append(r'\W')
         return self
 
-    def uppercaseLetter(self, start='A', end='Z'):
+    def uppercase_letter(self, start='A', end='Z'):
         self.regex.append(r'[%s-%s]' % (start, end, ))
         return self
 
-    def anyCharacter(self):
+    def any_character(self):
         self.regex.append(r'\w')
         return self
 
@@ -51,7 +51,7 @@ class Builder(object):
         self.regex.append(r'.')
         return self
 
-    def newLine(self):
+    def new_line(self):
         self.regex.append(r'\n')
         return self
 
@@ -59,7 +59,7 @@ class Builder(object):
         self.regex.append(r'\s')
         return self
 
-    def noWhitespace(self):
+    def no_whitespace(self):
         self.regex.append(r'\S')
         return self
 
@@ -75,11 +75,11 @@ class Builder(object):
         self.regex.append(r'{%d,%d}' % (start, end))
         return self
 
-    def onceOrMore(self):
+    def once_or_more(self):
         self.regex.append(r'+')
         return self
 
-    def neverOrMore(self):
+    def never_or_more(self):
         self.regex.append(r'*')
         return self
 
@@ -87,17 +87,17 @@ class Builder(object):
         self.regex.append(r'%s?' % char)
         return self
 
-    def firstMatch(self):
+    def first_match(self):
         if self.get()[-1] not in '+*}?':
             if self.regex[-1][-1] == ')' and self.get()[-2] in '+*}?':
-                self.regex.append(self.revertLast()[0:-1] + '?)')
+                self.regex.append(self.revert_last()[0:-1] + '?)')
                 return self
             raise LazyError('Cannot apply laziness at this point. Only applicable after quantifiers.')
         else:
             self.regex.append(r'?')
             return self
 
-    lazy = firstMatch
+    lazy = first_match
 
     def exactly(self, count):
         self.regex.append(r'{%d}' % count)
@@ -109,11 +109,11 @@ class Builder(object):
     def twice(self):
         return self.exactly(2)
 
-    def atLeast(self, number):
+    def at_least(self, number):
         self.regex.append(r'{%d,}' % number)
         return self
 
-    def addClosure(self, builder, conditions, exploder=''):
+    def add_closure(self, builder, conditions, exploder=''):
         if isinstance(conditions, basestring):
             subquery = builder.literally(conditions)
         elif callable(conditions):
@@ -136,19 +136,19 @@ class Builder(object):
             builder.group = '(?P<%s>%%s)' % name
         else:
             builder.group = '(%s)'
-        return self.addClosure(builder, conditions)
+        return self.add_closure(builder, conditions)
 
-    def anyOf(self, conditions):
+    def any_of(self, conditions):
         builder = Builder()
         builder.group = '(?:%s)'
-        return self.addClosure(builder, conditions, r'|')
+        return self.add_closure(builder, conditions, r'|')
 
-    eitherOf = anyOf
+    either_of = any_of
 
-    def nonCapture(self, conditions):
+    def non_capture(self, conditions):
         builder = Builder()
         builder.group = '(?:%s)'
-        return self.addClosure(builder, conditions)
+        return self.add_closure(builder, conditions)
 
     def until(self, conditions):
         try:
@@ -156,67 +156,67 @@ class Builder(object):
         except LazyError:
             pass
         builder = Builder()
-        return self.addClosure(builder, conditions)
+        return self.add_closure(builder, conditions)
 
-    def oneOf(self, char):
+    def one_of(self, char):
         char = self.escape(char)
         self.regex.append(r'[%s]' % char)
         return self
 
-    def ifFollowedBy(self, conditions):
+    def if_followed_by(self, conditions):
         builder = Builder()
         builder.group = r'(?=%s)'
-        return self.addClosure(builder, conditions)
+        return self.add_closure(builder, conditions)
 
-    def ifNotFollowedBy(self, conditions):
+    def if_not_followed_by(self, conditions):
         builder = Builder()
         builder.group = r'(?!%s)'
-        return self.addClosure(builder, conditions)
+        return self.add_closure(builder, conditions)
 
-    def ifAlreadyHad(self, conditions):
+    def if_already_had(self, conditions):
         builder = Builder()
         builder.group = r'(?<=%s)'
-        previous_cond = self.revertLast()
-        self.addClosure(builder, conditions)
+        previous_cond = self.revert_last()
+        self.add_closure(builder, conditions)
         self.regex.append(previous_cond)
         return self
 
-    def ifNotAlreadyHad(self, conditions):
+    def if_not_already_had(self, conditions):
         builder = Builder()
         builder.group = r'(?<!%s)'
-        previous_cond = self.revertLast()
-        self.addClosure(builder, conditions)
+        previous_cond = self.revert_last()
+        self.add_closure(builder, conditions)
         self.regex.append(previous_cond)
         return self
 
-    def beginWith(self):
+    def begin_with(self):
         self.regex.append(r'^') # FIXME: assert
         return self
 
-    startWith = beginWith
+    starts_with = begin_with
 
-    def mustEnd(self):
+    def must_end(self):
         self.regex.append(r'$')
         return self
 
-    def caseInsensitive(self):
+    def case_insensitive(self):
         self.flags = self.flags | re.IGNORECASE
         return self
 
-    def multiLine(self):
+    def multi_line(self):
         self.flags = self.flags | re.MULTILINE
         return self
 
-    def allLazy(self):
+    def all_lazy(self):
         self.regex.append(r'?') # FIXME: assert
         return self
 
-    def revertLast(self):
+    def revert_last(self):
         return self.regex.pop()
 
     def __and__(self, conditions):
         builder = Builder(group=self.group)
-        return self.addClosure(builder, conditions)
+        return self.add_closure(builder, conditions)
 
     def get(self, implode=r''):
         return self.group % implode.join(self.regex)
@@ -242,7 +242,7 @@ class Builder(object):
             self.compile()
         return self.compiled.match(string, self.flags)
 
-    def getMatches(self, string):
+    def get_matches(self, string):
         if not self.compiled:
             self.compile()
         match = self.compiled.search(string)

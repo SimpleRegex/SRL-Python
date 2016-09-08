@@ -8,8 +8,8 @@ from srl.srl import SRL
 def test_simple_phone_number_format():
     regex = Builder().literally('+').digit().between(1, 3) \
             .literally(' ').number().between(3, 4) \
-            .literally('-').digit().onceOrMore() \
-            .mustEnd().get()
+            .literally('-').digit().once_or_more() \
+            .must_end().get()
     assert re.match(regex, '+49 123-45')
     assert re.match(regex, '+492 1235-45')
     assert not re.match(regex, '+49 123 45')
@@ -18,12 +18,12 @@ def test_simple_phone_number_format():
     assert not re.match(regex, '+49 123-45b')
 
 def test_simple_email_format():
-    reg = Builder().anyOf(
-        lambda q: q.digit().letter().oneOf('._%+-')
-    ).onceOrMore().literally('@').eitherOf(
-        lambda q: q.digit().letter().oneOf('.-')
-    ).onceOrMore().literally('.').letter().atLeast(2) \
-    .mustEnd().caseInsensitive()
+    reg = Builder().any_of(
+        lambda q: q.digit().letter().one_of('._%+-')
+    ).once_or_more().literally('@').either_of(
+        lambda q: q.digit().letter().one_of('.-')
+    ).once_or_more().literally('.').letter().at_least(2) \
+    .must_end().case_insensitive()
     regex = reg.get()
 
     assert reg.is_valid()
@@ -39,32 +39,32 @@ def test_simple_email_format():
 
 def test_capture_group():
     builder = Builder()
-    query = builder.literally('colo').optional('u').literally('r').anyOf(lambda q: q.literally(':') & (lambda q: q.literally(' is'))).whitespace().capture(lambda q: q.letter().onceOrMore(), 'color').literally('.')
-    assert query.getMatches('my favorite color: blue.') == ['blue']
-    assert query.getMatches('my favorite colour is green.') == ['green']
-    assert not query.getMatches('my favorite colour is green!')
+    query = builder.literally('colo').optional('u').literally('r').any_of(lambda q: q.literally(':') & (lambda q: q.literally(' is'))).whitespace().capture(lambda q: q.letter().once_or_more(), 'color').literally('.')
+    assert query.get_matches('my favorite color: blue.') == ['blue']
+    assert query.get_matches('my favorite colour is green.') == ['green']
+    assert not query.get_matches('my favorite colour is green!')
     assert query.findall('my favorite colour is green. And my favorite color: yellow.') == ['green', 'yellow']
 
 def test_replace():
-    query = Builder().capture(lambda q: q.anyCharacter().onceOrMore()) \
-            .whitespace().capture(lambda q: q.digit().onceOrMore()) \
-            .literally(', ').capture(lambda q: q.digit().onceOrMore()) \
-            .caseInsensitive()
+    query = Builder().capture(lambda q: q.any_character().once_or_more()) \
+            .whitespace().capture(lambda q: q.digit().once_or_more()) \
+            .literally(', ').capture(lambda q: q.digit().once_or_more()) \
+            .case_insensitive()
     assert query.replace(r'\1 1, \3', 'April 15, 2003') == 'April 1, 2003'
 
 def test_filter():
-    query = Builder().capture(lambda q: q.uppercaseLetter())
+    query = Builder().capture(lambda q: q.uppercase_letter())
     assert query.filter(r'A:\g<0>', 'a1AB') == ('a1A:AA:B', 2)
 
 def test_replace_callback():
-    query = Builder().capture(lambda q: q.anyCharacter().onceOrMore()) \
-            .whitespace().capture(lambda q: q.digit().onceOrMore()) \
-            .literally(', ').capture(lambda q: q.digit().onceOrMore()) \
-            .caseInsensitive()
+    query = Builder().capture(lambda q: q.any_character().once_or_more()) \
+            .whitespace().capture(lambda q: q.digit().once_or_more()) \
+            .literally(', ').capture(lambda q: q.digit().once_or_more()) \
+            .case_insensitive()
     assert query.replace(lambda params: 'invoked', 'April 15, 2003') == 'invoked'
 
 def test_laziness():
-    regex = Builder().literally(',').twice().whitespace().optional().firstMatch()
+    regex = Builder().literally(',').twice().whitespace().optional().first_match()
     assert regex.split('sample,one,, two,,three') == ['sample,one', ' two', 'three']
 
 def test_raw():

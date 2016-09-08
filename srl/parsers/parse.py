@@ -177,7 +177,7 @@ def p_character_literally(p):
 
 def p_character_one_of(p):
     'character : K_ONE K_OF STRING'
-    p[0] = [('oneOf', (p[3][1:-1], ))]
+    p[0] = [('one_of', (p[3][1:-1], ))]
 
 def p_character_letter(p):
     '''character : K_LETTER
@@ -207,11 +207,11 @@ def p_character_uppercase_letter(p):
 
 def p_character_any_character(p):
     'character : K_ANY K_CHARACTER'
-    p[0] = [('anyCharacter', ())]
+    p[0] = [('any_character', ())]
 
 def p_character_no_character(p):
     'character : K_NO K_CHARACTER'
-    p[0] = [('noCharacter', ())]
+    p[0] = [('no_character', ())]
 
 def p_character_digit(p):
     '''character : K_DIGIT
@@ -232,7 +232,7 @@ def p_character_anything(p):
 
 def p_character_new_line(p):
     'character : K_NEW K_LINE'
-    p[0] = [('newLine', ())]
+    p[0] = [('new_line', ())]
 
 def p_character_whitespace(p):
     '''character : K_WHITESPACE
@@ -241,7 +241,7 @@ def p_character_whitespace(p):
 
 def p_character_no_whitespace(p):
     'character : K_NO K_WHITESPACE'
-    p[0] = [('noWhitespace', ())]
+    p[0] = [('no_whitespace', ())]
 
 def p_character_tab(p):
     'character : K_TAB'
@@ -275,15 +275,15 @@ def p_quantifier_optional(p):
 
 def p_quantifier_once_or_more(p):
     'quantifier : K_ONCE K_OR K_MORE'
-    p[0] = [('onceOrMore', ())]
+    p[0] = [('once_or_more', ())]
 
 def p_quantifier_never_or_more(p):
     'quantifier : K_NEVER K_OR K_MORE'
-    p[0] = [('neverOrMore', ())]
+    p[0] = [('never_or_more', ())]
 
 def p_quantifier_at_least_x_times(p):
     'quantifier : K_AT K_LEAST NUMBER K_TIMES'
-    p[0] = [('atLeast', (p[3], ))]
+    p[0] = [('at_least', (p[3], ))]
 
 
 def p_group_string(p):
@@ -306,11 +306,11 @@ def p_group_any_of(p):
     '''character : K_ANY K_OF group
                  | K_EITHER K_OF group
     '''
-    p[0] = [('anyOf', (p[3], ))]
+    p[0] = [('any_of', (p[3], ))]
 
-def p_group_nonCapture(p):
+def p_group_non_capture(p):
     'character : group'
-    p[0] = [('nonCapture', (p[1], ))]
+    p[0] = [('non_capture', (p[1], ))]
 
 def p_group_until(p):
     '''character : K_UNTIL group
@@ -320,24 +320,24 @@ def p_group_until(p):
 def p_flag_case_insensitive(p):
     '''flag : K_CASE K_INSENSITIVE
     '''
-    p[0] = [('caseInsensitive', ())]
+    p[0] = [('case_insensitive', ())]
 
 def p_flag_multi_line(p):
     '''flag : K_MULTI K_LINE
     '''
-    p[0] = [('multiLine', ())]
+    p[0] = [('multi_line', ())]
 
 def p_flag_all_lazy(p):
     '''flag : K_ALL K_LAZY
     '''
-    p[0] = [('allLazy', ())]
+    p[0] = [('all_lazy', ())]
 
 def p_anchor_begin_with(p):
     '''anchor : K_BEGIN K_WITH
               | K_STARTS K_WITH
     '''
     p[0] = p[0] or []
-    p[0].append(('beginWith', ()))
+    p[0].append(('begin_with', ()))
     if len(p) == 4:
         p[0] += p[3]
 
@@ -347,21 +347,21 @@ def p_anchor_must_end(p):
     p[0] = p[0] or []
     if len(p) == 4:
         p[0] += p[1]
-    p[0].append(('mustEnd', ()))
+    p[0].append(('must_end', ()))
 
 def p_lookaround_if_followed_by(p):
     'lookaround : K_IF K_FOLLOWED K_BY group'
-    p[0] = [('ifFollowedBy', (p[4], ))]
+    p[0] = [('if_followed_by', (p[4], ))]
 
 def p_lookaround_if_not_followed_by(p):
     'lookaround : K_IF K_NOT K_FOLLOWED K_BY group'
-    p[0] = [('ifNotFollowedBy', (p[5], ))]
+    p[0] = [('if_not_followed_by', (p[5], ))]
 
 def p_lookaround_if_already_had(p):
     'lookaround : K_IF K_ALREADY K_HAD group'
     p[0] = [('ifAlreadHad', (p[4], ))]
 
-def p_lookaround_if_already_had(p):
+def p_lookaround_if_not_already_had(p):
     'lookaround : K_IF K_NOT K_ALREADY K_HAD group'
     p[0] = [('ifNotAlreadHad', (p[5], ))]
 
