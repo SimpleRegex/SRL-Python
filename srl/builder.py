@@ -3,6 +3,7 @@
 import re
 import copy
 
+from ._compat import string_types
 from .parsers.parse import parse
 
 class LazyError(Exception): pass
@@ -125,7 +126,7 @@ class Builder(object):
 
     def add_closure(self, builder, conditions, exploder=''):
         builder.greedy_mode = self.greedy_mode
-        if isinstance(conditions, basestring):
+        if isinstance(conditions, string_types):
             subquery = builder.literally(conditions)
         elif callable(conditions):
             subquery = conditions(builder)
