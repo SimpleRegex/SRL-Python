@@ -10,8 +10,10 @@ A Python Implementation of [Simple Regex](https://simple-regex.com/).
 ## How to use
 
     >>> from srl import SRL
-    >>> regex_object = SRL('digit exactly 3 times')
-    >>> matched = regex_object.search('123') # Exactly same API with class re.RegexObject
+    >>> srl = SRL('digit exactly 3 times')
+    >>> srl.pattern
+    '[0-9]{3}'
+    >>> matched = srl.search('123') # Exactly same API with class re.RegexObject
     >>> matched.group()
     '123'
 
