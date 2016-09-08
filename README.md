@@ -9,11 +9,14 @@ A Python Implementation of [Simple Regex](https://simple-regex.com/).
 
 ## How to use
 
+Class `SRL` takes a Simple Regex Language string as input.
+`SRL` instance shares exactly same API with [re.RegexObject](https://docs.python.org/2/library/re.html#regular-expression-objects)
+
     >>> from srl import SRL
     >>> srl = SRL('digit exactly 3 times')
     >>> srl.pattern
     '[0-9]{3}'
-    >>> matched = srl.search('123') # Exactly same API with class re.RegexObject
+    >>> matched = srl.search('123')
     >>> matched.group()
     '123'
 
