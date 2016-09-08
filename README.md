@@ -1,5 +1,4 @@
-SRL.py
-======
+# SRL-Python
 
 Python Implementation of [Simple Regex](https://simple-regex.com/).
 
