@@ -1,3 +1,3 @@
 [submodule "tests/rules"]
 	path = tests/rules
-	url = git@github.com:SimpleRegex/Test-Rules.git
+    url = https://github.com/SimpleRegex/Test-Rules
