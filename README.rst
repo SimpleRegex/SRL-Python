@@ -1,7 +1,7 @@
 SRL-Python
 ----------
 
-Python Implementation of `Simple Regex <https://simple-regex.com>`.
+Python Implementation of `Simple Regex <https://simple-regex.com>`_.
 
 .. :image: https://travis-ci.org/SimpleRegex/SRL-Python.svg?branch=master
   :target: https://travis-ci.org/SimpleRegex/SRL-Python
@@ -9,9 +9,10 @@ Python Implementation of `Simple Regex <https://simple-regex.com>`.
 Installation
 ````````````
 
-You can download and install the latest version of this software from the Python package index (PyPI) as below:
+You can download and install the latest version of this software from the Python package index (PyPI) as below::
 
     $ pip install srl
+    ✨🍰✨
 
 SRL-Python supports:
 
@@ -25,7 +26,7 @@ Usage
 ``````
 
 Class `SRL` takes a Simple Regex Language string as input.
-`SRL` instance shares exactly same API with `re.RegexObject <https://docs.python.org/2/library/re.html#regular-expression-objects>`::
+`SRL` instance shares exactly same API with `re.RegexObject <https://docs.python.org/2/library/re.html#regular-expression-objects>`_::
 
     >>> from srl import SRL
     >>> srl = SRL('digit exactly 3 times')
@@ -35,7 +36,7 @@ Class `SRL` takes a Simple Regex Language string as input.
     >>> matched.group()
     '123'
 
-See more usages in `Specification <https://github.com/SimpleRegex/SRL-Python/blob/master/specification.md>`.
+See more usages in `Specification <https://github.com/SimpleRegex/SRL-Python/blob/master/specification.md>`_.
 
 Test
 ``````
