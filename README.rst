@@ -41,7 +41,7 @@ See more usages in `Specification <https://github.com/SimpleRegex/SRL-Python/blo
 Test
 -----------------
 
-`SRL-Python` uses nose as test runner.:
+`SRL-Python` uses nose as test runner.::
 
     $ pip install nose
     $ nosetests -c ./nose.cfg
