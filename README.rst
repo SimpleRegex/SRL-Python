@@ -1,5 +1,5 @@
 SRL-Python
-----------
+==============
 
 Python Implementation of `Simple Regex <https://simple-regex.com>`_.
 
@@ -7,7 +7,7 @@ Python Implementation of `Simple Regex <https://simple-regex.com>`_.
   :target: https://travis-ci.org/SimpleRegex/SRL-Python
 
 Installation
-````````````
+-----------------
 
 You can download and install the latest version of this software from the Python package index (PyPI) as below::
 
@@ -23,7 +23,7 @@ SRL-Python supports:
 * Pypy
 
 Usage
-``````
+-----------------
 
 Class `SRL` takes a Simple Regex Language string as input.
 `SRL` instance shares exactly same API with `re.RegexObject <https://docs.python.org/2/library/re.html#regular-expression-objects>`_::
@@ -39,7 +39,7 @@ Class `SRL` takes a Simple Regex Language string as input.
 See more usages in `Specification <https://github.com/SimpleRegex/SRL-Python/blob/master/specification.md>`_.
 
 Test
-``````
+-----------------
 
 `SRL-Python` uses nose as test runner.:
 
@@ -47,19 +47,18 @@ Test
     $ nosetests -c ./nose.cfg
 
 License
-``````````
+-----------------
 
 SRL is published under the MIT license. See `LICENSE` for more information.
 
 Contribution
-``````````````
+-----------------
 
 Like this project? Want to contribute? Awesome! Feel free to open some pull requests or just open an issue.
 
 Authors
-``````````
+-----------------
 
 Send a pull request and bug the maintainer until it gets merged and published. :) Make sure to add yourself below.
 
 - Lin Ju <soasme@gmail.com>
-
