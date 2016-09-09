@@ -3,7 +3,7 @@ SRL-Python
 
 Python Implementation of `Simple Regex <https://simple-regex.com>`_.
 
-.. :image: https://travis-ci.org/SimpleRegex/SRL-Python.svg?branch=master
+.. image:: https://travis-ci.org/SimpleRegex/SRL-Python.svg?branch=master
   :target: https://travis-ci.org/SimpleRegex/SRL-Python
 
 Installation
