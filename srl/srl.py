@@ -30,7 +30,17 @@ class SRL(object):
         self.compiled = Builder.parse(srl)
 
     def __str__(self):
+        """str(srl): regex pattern of compiled Simple Regex Language.::
+
+            >>> srl = SRL('digit exactly 3 times')
+            >>> print(srl) # [0-9]{3}
+        """
         return self.compiled.pattern
 
     def __getattr__(self, method):
+        """SRL shares the same API with :class:`re.RegexObject`.::
+
+            >>> srl = SRL('digit exactly 3 times')
+            >>> srl.match('012') # <_sre.SRE_Match object at 0x10b0e89f0>
+        """
         return getattr(self.compiled, method)
