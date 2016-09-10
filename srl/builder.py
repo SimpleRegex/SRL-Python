@@ -1,4 +1,13 @@
 # -*- coding: utf-8 -*-
+"""
+srl.builder
+~~~~~~~~~~~
+
+This module implements the builder of Simple Regex Language.
+
+:copyright: (c) 2016 by Simple Regex Language.
+:license: MIT, see LICENSE for more details.
+"""
 
 import re
 import copy
@@ -9,7 +18,6 @@ from .parsers.parse import parse
 class LazyError(Exception): pass
 
 class Builder(object):
-
 
     def __init__(self, regex=None, flags=0, group='%s'):
         self.regex = regex or []
