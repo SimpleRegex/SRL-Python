@@ -6,6 +6,12 @@
 Welcome to SRL-Python's documentation!
 ======================================
 
+`SRL-Python` is `Simple Regex Language`_ library for Python.
+`SRL-Python` is pure Python, and has no other dependencies.
+`SRL-Python` supports for Python 2.7/3.3/3.4/3.5 and pypy.
+
+.. _Simple Regex Language: https://simple-regex.com
+
 Contents:
 
 .. toctree::
