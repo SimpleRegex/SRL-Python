@@ -10,14 +10,17 @@ Welcome to SRL-Python's documentation!
 `SRL-Python` is pure Python, and has no other dependencies.
 `SRL-Python` supports for Python 2.7/3.3/3.4/3.5 and pypy.
 
+Useful Links
+=============
+
+* `Simple Regex Language`_
+* `SRL-Python @ Github`_
+* `SRL-Python @ Readthedocs`_
+
 .. _Simple Regex Language: https://simple-regex.com
+.. _SRL-Python @ Github: https://github.com/SimpleRegex/SRL-Python
+.. _SRL-Python @ Readthedocs: https://srl-python.readthedocs.org/en/latest
 
-Contents:
-
-.. toctree::
-   :maxdepth: 2
-
-   api
 
 Usage
 =====
@@ -30,6 +33,14 @@ Here is a short example, to illustrate the flavor of :mod:`srl`::
     '[0-9]{3}'
     >>> srl.findall('0 01 012 013')
     ['012', '013']
+
+Contents
+=========
+
+.. toctree::
+   :maxdepth: 2
+
+   api
 
 License
 =======
