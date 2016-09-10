@@ -1,4 +1,13 @@
 # -*- coding: utf-8 -*-
+"""
+srl.parsers.parser
+~~~~~~~~~~~~~~~~~~
+
+This module implements Simple Regex Language parser.
+
+:copyright: (c) 2016 by Simple Regex Language.
+:license: MIT, see LICENSE for more details.
+"""
 
 from ..utils import lex
 from ..utils import yacc
