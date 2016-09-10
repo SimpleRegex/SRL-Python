@@ -33,7 +33,7 @@ class SRL(object):
         """str(srl): regex pattern of compiled Simple Regex Language.::
 
             >>> srl = SRL('digit exactly 3 times')
-            >>> print(srl) # [0-9]{3}
+            >>> assert str(srl) == '[0-9]{3}'
         """
         return self.compiled.pattern
 
@@ -41,6 +41,6 @@ class SRL(object):
         """SRL shares the same API with :class:`re.RegexObject`.::
 
             >>> srl = SRL('digit exactly 3 times')
-            >>> srl.match('012') # <_sre.SRE_Match object at 0x10b0e89f0>
+            >>> assert srl.match('012').group(0) == '012'
         """
         return getattr(self.compiled, method)
