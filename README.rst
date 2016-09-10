@@ -36,7 +36,7 @@ Class `SRL` takes a Simple Regex Language string as input.
     >>> matched.group()
     '123'
 
-See more usages in `Specification <https://github.com/SimpleRegex/SRL-Python/blob/master/specification.md>`_.
+* Read document: `Readthedocs <http://srl-python.readthedocs.io/en/latest/>`_.
 
 Test
 -----------------
